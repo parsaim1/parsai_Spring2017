@@ -41,7 +41,7 @@ public class Spreadsheet implements Grid {
 	@Override
 	public String getGridText() {
 		// TODO Auto-generated method stub
-		return null;
+		for ()
 	}
 
 }
