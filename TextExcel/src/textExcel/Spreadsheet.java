@@ -45,7 +45,7 @@ public class Spreadsheet implements Grid {
 			for (int j = 0; j < 13; j++) {
 				if (i == 0 && i < 10) {
 					setUp[i][j] = i + "  ";
-				}
+				} else if ()
 			}
 		}
 	}
