@@ -45,11 +45,17 @@ public class Spreadsheet implements Grid {
 		int rowNumb = 1;
 		char colLett = 'A';
 		for (int i = 0; i < 21; i++) {
+			if (i==0) {
+				grid = "  ";
+			}
 			for (int j = 0; j < 13; j++) {
-				if (i == 0 && i < 10) {
-					grid = "" + rowNumb + "  ";
-				} else if (i == 0 && i > 10) {
-					grid = "" + rowNumb + " ";
+			
+					
+				}
+				if (j == 0 && i < 10) {
+					grid = grid + rowNumb + "  ";
+				} else if (j == 0 && i > 10) {
+					grid = grid + rowNumb + " ";
 				}
 			}
 		}
