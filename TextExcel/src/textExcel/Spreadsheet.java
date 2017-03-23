@@ -15,10 +15,41 @@ public class Spreadsheet implements Grid {
 	}
 	
 	@Override
-	public String processCommand(String command) {
-		// TODO Auto-generated method stub
+	public String processCommand (String command) {
+		if (command.indexOf(" ") != -1) {
+			String[] breakUp = command.split(" ", 3);
+			if (breakUp[0].equalsIgnoreCase("clear")) {     //if the command contains a space and has the String "clear", we know we are clearing a particular cell
+				SpreadsheetLocation specLoc = new SpreadsheetLocation(breakUp[1]);
+				setUp[specLoc.getRow()][specLoc.getCol()] = new EmptyCell();
+				return getGridText();
+			} else if (breakUp[1].equals("=")) {
+				SpreadsheetLocation specLoc = new SpreadsheetLocation(breakUp[0]);
+				if (breakUp[2].substring(0, 1).equals("\"")) {
+					setUp[specLoc.getRow()][specLoc.getCol()] = new TextCell(breakUp[2]);
+					/*} else if (breakUp[2].charAt(breakUp[2].length() - 1) == '%') {
+					setUp[specLoc.getRow()][specLoc.getCol()] = new PercentCell();
+				} else if (breakUp[2].substring(0, 1).equals("(")) {	//since we know it is not a text cell, we can safely assume it is a formula cell if it contains one set of parentheis
+					setUp[specLoc.getRow()][specLoc.getCol()] = new FormulaCell();
+				} else {
+					setUp[specLoc.getRow()][specLoc.getCol()] = new ValueCell(); */
+				} 
+				return getGridText();
+			}
+		} else if (command.equalsIgnoreCase("clear")){      //if the previous tests fail, we can assume we are clearing the entire spreadsheet  
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 12; j++) {
+					setUp[i][j] = new EmptyCell();
+				}
+			}
+			return getGridText();
+		} else {
+			SpreadsheetLocation specLoc = new SpreadsheetLocation(command);
+			return getCell(specLoc).fullCellText();
+		}
 		return command;
 	}
+		
+	
 
 	@Override
 	public int getRows() {
@@ -34,31 +65,33 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public Cell getCell(Location loc) {
-		// TODO Auto-generated method stub
-		return null;
+		return setUp[loc.getRow()][loc.getCol()];
 	}
 
 	@Override
 	public String getGridText() {
 		// TODO Auto-generated method stub
-		String grid = "";
-		int rowNumb = 1;
-		char colLett = 'A';
-		for (int i = 0; i < 21; i++) {
-			if (i==0) {
-				grid = "  ";
-			}
-			for (int j = 0; j < 13; j++) {
-			
-					
-				}
-				if (j == 0 && i < 10) {
-					grid = grid + rowNumb + "  ";
-				} else if (j == 0 && i > 10) {
-					grid = grid + rowNumb + " ";
-				}
-			}
+		String grid = "   |";
+		char colLet = 'A';
+		int rowNum = 1;
+		for (int i = 0; i < 12; i++) {    //creates the first header line
+			grid += colLet + "         |";
+			colLet++;
 		}
+		grid = grid + "\n";
+		for (int j = 0; j < 20; j++) {
+			if (j < 9) {
+				grid += rowNum + "  |";
+			} else {
+				grid += rowNum + " |";
+			}
+			for (int z = 0; z < 12; z++) {
+				grid += setUp[j][z].abbreviatedCellText() + "|"; 
+			}
+			rowNum++;
+			grid += "\n";
+		}
+		return grid;
 	}
-
+			
 }
