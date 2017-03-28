@@ -9,21 +9,21 @@ public class RealCell implements Cell {
 	@Override
 	public String abbreviatedCellText() {
 		// TODO Auto-generated method stub
-		if (value.length() > 10) {
-			return value.substring(0, 10);    //truncates value longer than 10 characters
-		} else if (value.length() == 10) {	//no need to change the value since exactly 10 characters long
-			return value;
+		String value2 = value;
+		if (value2.length() > 10) {
+			return value2.substring(0, 10);    //truncates value longer than 10 characters
+		} else if (value2.length() == 10) {	//no need to change the value since exactly 10 characters long
+			return value2;
 		} else {
-			while (value.length() < 10) {    //adds spaces so the cell will be 10 characters long if the value itself is shorter
-				value += " ";
+			while (value2.length() < 10) {    //adds spaces so the cell will be 10 characters long if the value itself is shorter
+				value2 += " ";
 			}
-			return value;
+			return value2;
 		}
 	}
 
 	@Override
 	public String fullCellText() {
-		// TODO Auto-generated method stub
 		return value;
 	}
 	

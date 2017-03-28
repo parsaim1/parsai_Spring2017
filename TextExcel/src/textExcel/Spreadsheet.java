@@ -31,7 +31,7 @@ public class Spreadsheet implements Grid {
 				} else if (breakUp[2].substring(0, 1).equals("(")) {	//since we know it is not a text cell, we can safely assume it is a formula cell if it contains one set of parentheis
 					setUp[specLoc.getRow()][specLoc.getCol()] = new FormulaCell();
 				} else {
-					setUp[specLoc.getRow()][specLoc.getCol()] = new ValueCell(); 
+					setUp[specLoc.getRow()][specLoc.getCol()] = new ValueCell(breakUp[2]); 
 				} 
 				return getGridText();
 			}
