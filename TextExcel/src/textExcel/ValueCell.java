@@ -1,21 +1,23 @@
 package textExcel;
 
 public class ValueCell extends RealCell {
-	private String s;
-	public ValueCell (String specValue) {
-		super(Double.parseDouble(specValue) + "");
-		s = specValue;
-	}
-	public String fullCellText() {
-		return s;
+	
+	public ValueCell (String specValue) {  //constructor
+		super (specValue);
 	}
 	
-	
-	
-	
-	
-	/*public ValueCell (String specValue){
-		super(specValue);
-	}*/
+	/*public String abbreviatedCellText() {
+		String value2 = getDoubleValue() + "";
+		if (value2.length() > 10) {
+			return value2.substring(0, 10);    //truncates value longer than 10 characters
+		} else if (value2.length() == 10) {	//no need to change the value since exactly 10 characters long
+			return value2;
+		} else {
+			while (value2.length() < 10) {    //adds spaces so the cell will be 10 characters long if the value itself is shorter
+				value2 += " ";
+			}
+			return value2;
+		}
+	} */
 	
 }

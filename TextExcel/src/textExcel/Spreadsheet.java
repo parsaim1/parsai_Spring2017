@@ -27,9 +27,9 @@ public class Spreadsheet implements Grid {
 				if (breakUp[2].substring(0, 1).equals("\"")) {
 					setUp[specLoc.getRow()][specLoc.getCol()] = new TextCell(breakUp[2]);
 				} else if (breakUp[2].charAt(breakUp[2].length() - 1) == '%') {
-					setUp[specLoc.getRow()][specLoc.getCol()] = new PercentCell();
+					setUp[specLoc.getRow()][specLoc.getCol()] = new PercentCell(breakUp[2]);
 				} else if (breakUp[2].substring(0, 1).equals("(")) {	//since we know it is not a text cell, we can safely assume it is a formula cell if it contains one set of parentheis
-					setUp[specLoc.getRow()][specLoc.getCol()] = new FormulaCell();
+					setUp[specLoc.getRow()][specLoc.getCol()] = new FormulaCell(breakUp[2], setUp);
 				} else {
 					setUp[specLoc.getRow()][specLoc.getCol()] = new ValueCell(breakUp[2]); 
 				} 
@@ -42,12 +42,15 @@ public class Spreadsheet implements Grid {
 				}
 			}
 			return getGridText();
-		} else {
+		}else if (command.equals("")) {
+			return command;
+		}else {
 			SpreadsheetLocation specLoc = new SpreadsheetLocation(command);
 			return getCell(specLoc).fullCellText();
 		}
 		return command;
 	}
+		
 		
 	
 
