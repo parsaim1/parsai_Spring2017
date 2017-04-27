@@ -37,19 +37,15 @@ public class FormulaCell extends RealCell {
 				}
 			}
 			return sumTotal;
-		} else if (formulaText.toUpperCase().indexOf("AVG") != -1){
-			int numbOfCells = 0;
+		} else if (formulaText.toUpperCase().indexOf("AVG") != -1) {
 			double sumTotal = 0.0;
+			int numbOfCells = 0;
 			//formulaText = formulaText.toUpperCase().substring(4);
 			//String[] splitDash = formulaText.split("-");
-			System.out.println(formulaText.substring(4, formulaText.indexOf("-")));
-			String sajkd = formulaText;
-			sajkd +="!!!";
 			SpreadsheetLocation firstCell = new SpreadsheetLocation(formulaText.substring(4, formulaText.indexOf("-")));//splitDash[0]);
 			SpreadsheetLocation lastCell = new SpreadsheetLocation(formulaText.substring(formulaText.indexOf("-") + 1));//splitDash[1]);
 			for (int cellMarkerCol = firstCell.getCol(); cellMarkerCol <= lastCell.getCol(); cellMarkerCol++) {
 				for (int cellMarkerRow = firstCell.getRow(); cellMarkerRow <= lastCell.getRow(); cellMarkerRow++) {
-					System.out.println(formulaText);
 					sumTotal += ((RealCell) userSpreadsheet[cellMarkerRow][cellMarkerCol]).getDoubleValue();
 					numbOfCells ++;
 				}
