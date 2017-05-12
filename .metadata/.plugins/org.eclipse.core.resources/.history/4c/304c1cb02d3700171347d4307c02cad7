@@ -1,0 +1,23 @@
+package textExcel;
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+
+public class TextExcel
+{
+
+	public static void main(String[] args)
+	{
+		Spreadsheet sprdsheet = new Spreadsheet();			
+	    
+	    Scanner input = new Scanner(System.in);	 //creates a scanner			
+	    String command = input.nextLine();					
+	    while (!command.equalsIgnoreCase("quit")){  //want to accept commands until the user enters "quit"
+	    	System.out.println(sprdsheet.processCommand(command));			
+	    	command = input.nextLine();										
+	    }
+	}
+}
+

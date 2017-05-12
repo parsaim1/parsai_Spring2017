@@ -1,0 +1,87 @@
+package textExcel;
+
+public class Spreadsheet implements Grid {
+	
+	private Cell[][] setUp = new Cell[20][12];
+	
+	public Spreadsheet() {   //creates a constructor 
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 12; j++) {
+				setUp[i][j] = new EmptyCell();   //each element in this 2-D array starts as an empty cell
+			}
+		}
+	}
+	
+	public String processCommand (String command) {
+		if (command.indexOf(" ") != -1) {  //checks to see if there are spaces
+			String[] breakUp = command.split(" ", 3);   //parses the original command by spaces and creates three elements split by spaces
+			if (breakUp[0].equalsIgnoreCase("clear")) {     //if the command contains a space and has the String "clear", we know we are clearing a particular cell
+				SpreadsheetLocation specLoc = new SpreadsheetLocation(breakUp[1]);
+				setUp[specLoc.getRow()][specLoc.getCol()] = new EmptyCell();
+				return getGridText();
+			} else if (breakUp[1].equals("=")) {   //if there is an equals sign as the middle element, we know we are dealing with a text, percent, formula, or value cell
+				SpreadsheetLocation specLoc = new SpreadsheetLocation(breakUp[0]);
+				if (breakUp[2].substring(0, 1).equals("\"")) {  //if the last element contains quotation marks, it is a text cell
+					setUp[specLoc.getRow()][specLoc.getCol()] = new TextCell(breakUp[2]);
+				} else if (breakUp[2].charAt(breakUp[2].length() - 1) == '%') {   //if the last character of the last element is a percent sign, we are dealing with a percent cell
+					setUp[specLoc.getRow()][specLoc.getCol()] = new PercentCell(breakUp[2]);
+				} else if (breakUp[2].substring(0, 1).equals("(")) {	//since we know it is not a text cell, we can safely assume it is a formula cell if it contains one set of parenthesis
+					setUp[specLoc.getRow()][specLoc.getCol()] = new FormulaCell(breakUp[2], setUp);
+				} else {
+					setUp[specLoc.getRow()][specLoc.getCol()] = new ValueCell(breakUp[2]);  //if it wasn't a text/percent/formula cell, we know we are dealing with a value cell
+				} 
+				return getGridText();
+			}
+		} else if (command.equalsIgnoreCase("clear")){      //if the previous tests fail, we can assume we are clearing the entire spreadsheet  
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 12; j++) {
+					setUp[i][j] = new EmptyCell();  //makes every element an empty string (which clears the spreadsheet)
+				}
+			}
+			return getGridText();
+		}else if (command.equals("")) {   //does nothing if nothing is typed
+			return command;
+		}else {
+			SpreadsheetLocation specLoc = new SpreadsheetLocation(command);   //returns what is in the cell if the user inspects a cell
+			return getCell(specLoc).fullCellText();
+		}
+		return command;
+	}
+		
+	public int getRows() {   //can hard-code because there will always be 20 rows in the grid
+		return 20;
+	}
+
+	public int getCols() {  //can hard-code because there will always be 12 columns in the grid 
+		return 12;
+	}
+
+	public Cell getCell(Location loc) {    //access the location of a cell
+		return setUp[loc.getRow()][loc.getCol()];
+	}
+
+	public String getGridText() {
+		String grid = "   |";
+		char colLet = 'A';
+		int rowNum = 1;
+		for (int i = 0; i < 12; i++) {    //creates the first header line
+			grid += colLet + "         |";   //need only nine spaces since the Column Letter takes up one space
+			colLet++;
+		}
+		grid = grid + "\n";
+		for (int j = 0; j < 20; j++) {   //creates the rest of the row lines 
+			if (j < 9) {
+				grid += rowNum + "  |"; //need two spaces since the row number is a single digit
+			} else {
+				grid += rowNum + " |";  //need one space since the row number is two digits 
+			}
+			for (int z = 0; z < 12; z++) {   //creates the columns in that row 
+				grid += setUp[j][z].abbreviatedCellText() + "|";   //prints what is stored in that cell
+			}
+			rowNum++;
+			grid += "\n";
+		}
+		return grid;
+	}
+			
+}
